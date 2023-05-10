@@ -1,13 +1,7 @@
 #pragma once
 #include "ForwardList.h"
 
-typedef struct MatrizEsparsa
-{
-    ForwardList **head_rows;
-    ForwardList **head_columns;
-    int rows;
-    int columns;
-} MatrizEsparsa;
+typedef struct MatrizEsparsa *pMatrizEsparsa;
 
 /**
  * @brief Constroi uma nova matriz esparsa:: estrutura de matriz esparsa
@@ -16,12 +10,12 @@ typedef struct MatrizEsparsa
  * Numero de linhas da matriz.
  * @param columns
  * Numero de colunas da matriz.
- * @return MatrizEsparsa*
+ * @return pMatrizEsparsa
  * Ponteiro para a nova matriz esparsa alocada.
  * @note
  * O usuario eh responsavel por liberar os ponteiros utilizando a funcao matriz_esparsa_destroi().
  */
-MatrizEsparsa *MatrizEsparsa_cria(int rows, int columns);
+pMatrizEsparsa MatrizEsparsa_cria(int rows, int columns);
 
 /**
  * @brief Insere um valor na matriz esparsa:: estrutura de matriz esparsa
@@ -40,7 +34,7 @@ MatrizEsparsa *MatrizEsparsa_cria(int rows, int columns);
  * @note
  * O valor eh inserido nas listas encadeadas da matriz esparsa na posicao (row, column).
  */
-void MatrizEsparsa_insere(MatrizEsparsa *matriz, int row, int column, float value, Operacao op);
+void MatrizEsparsa_insere(pMatrizEsparsa matriz, int row, int column, float value, Operacao op);
 
 /**
  * @brief Le um valor da matriz esparsa:: estrutura de matriz esparsa
@@ -54,10 +48,10 @@ void MatrizEsparsa_insere(MatrizEsparsa *matriz, int row, int column, float valu
  * @return float
  * Valor lido da matriz.
  * @note
- * O valor eh lido das listas encadeadas da matriz esparsa na posicao (row, column). 
+ * O valor eh lido das listas encadeadas da matriz esparsa na posicao (row, column).
  * Eh selecionada a lista encadeada de linhas ou de colunas dependendo da menor posicao entre row e column.
-*/
-float MatrizEsparsa_le_valor(MatrizEsparsa *matriz, int row, int column);
+ */
+float MatrizEsparsa_le_valor(pMatrizEsparsa matriz, int row, int column);
 
 /**
  * @brief Soma duas matrizes esparsas:: estrutura de matriz esparsa
@@ -66,13 +60,43 @@ float MatrizEsparsa_le_valor(MatrizEsparsa *matriz, int row, int column);
  * Ponteiro para a primeira matriz esparsa a ser somada.
  * @param matriz2
  * Ponteiro para a segunda matriz esparsa a ser somada.
- * @return MatrizEsparsa*
+ * @return pMatrizEsparsa
  * Ponteiro para a nova matriz esparsa alocada com o resultado da soma.
  * @note
  * Eh criada uma nova matriz esparsa com o resultado da soma das duas matrizes esparsas.
  * Eh selecionada a lista encadeada de linhas ou de colunas dependendo da menor posicao entre row e column.
  */
-MatrizEsparsa* MatrizEsparsa_soma(MatrizEsparsa *matriz1, MatrizEsparsa *matriz2);
+pMatrizEsparsa MatrizEsparsa_soma(pMatrizEsparsa matriz1, pMatrizEsparsa matriz2);
+
+/**
+ * @brief Multiplica uma matriz por um escalar:: estrutura de matriz esparsa
+ * Multiplica uma matriz esparsa por um escalar e retorna uma nova matriz esparsa com o resultado.
+ * @param matriz
+ * Ponteiro para a matriz esparsa a ser multiplicada.
+ * @param escalar
+ * Escalar a ser multiplicado pela matriz.
+ * @return pMatrizEsparsa
+ * Ponteiro para a nova matriz esparsa alocada com o resultado da multiplicacao.
+ * @note
+ * Eh criada uma nova matriz esparsa com o resultado da multiplicacao da matriz esparsa pelo escalar.
+*/
+pMatrizEsparsa MatrizEsparsa_mult_por_escalar(pMatrizEsparsa matriz, float escalar);
+
+/**
+ * @brief Multiplica duas matrizes esparsas:: estrutura de matriz esparsa
+ * Multiplica duas matrizes esparsas e retorna uma nova matriz esparsa com o resultado.
+ * @param matriz1
+ * Ponteiro para a primeira matriz esparsa a ser multiplicada.
+ * @param matriz2
+ * Ponteiro para a segunda matriz esparsa a ser multiplicada.
+ * @return pMatrizEsparsa
+ * Ponteiro para a nova matriz esparsa alocada com o resultado da multiplicacao.
+ * @note
+ * Eh obrigatorio que o numero de colunas da primeira matriz seja igual ao numero de linhas da segunda matriz. 
+ * Sera realizada uma multiplicacao a direita da matriz 1 pela matriz 2; matriz1 * matriz2, e nao matriz2 * matriz1.
+ * Eh criada uma nova matriz esparsa com o resultado da multiplicacao das duas matrizes esparsas.
+ */
+pMatrizEsparsa MatrizEsparsa_mult_por_matriz(pMatrizEsparsa matriz1, pMatrizEsparsa matriz2);
 
 /**
  * @brief Destroi uma matriz esparsa:: estrutura de matriz esparsa
@@ -83,4 +107,4 @@ MatrizEsparsa* MatrizEsparsa_soma(MatrizEsparsa *matriz1, MatrizEsparsa *matriz2
  * @note
  * O ponteiro para a matriz eh manualmente setado para NULL apos liberado por seguranca.
  */
-void MatrizEsparsa_destroi(MatrizEsparsa *matriz);
+void MatrizEsparsa_destroi(pMatrizEsparsa matriz);
