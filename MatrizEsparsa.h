@@ -99,6 +99,49 @@ pMatrizEsparsa MatrizEsparsa_mult_por_escalar(pMatrizEsparsa matriz, float escal
 pMatrizEsparsa MatrizEsparsa_mult_por_matriz(pMatrizEsparsa matriz1, pMatrizEsparsa matriz2);
 
 /**
+ * @brief Multiplica duas matrizes esparsas ponto a ponto:: estrutura de matriz esparsa
+ * Multiplica duas matrizes esparsas ponto a ponto e retorna uma nova matriz esparsa com o resultado.
+ * @param matriz1
+ * Ponteiro para a primeira matriz esparsa a ser multiplicada.
+ * @param matriz2
+ * Ponteiro para a segunda matriz esparsa a ser multiplicada.
+ * @return pMatrizEsparsa
+ * Ponteiro para a nova matriz esparsa alocada com o resultado da multiplicacao.
+ * @note
+ * Eh obrigatorio que as dimensoes das duas matriz sejam iguais. 
+ * Eh criada uma nova matriz esparsa com o resultado da multiplicacao das duas matrizes esparsas.
+ */
+pMatrizEsparsa MatrizEsparsa_mult_ponto_a_ponto(pMatrizEsparsa matriz1, pMatrizEsparsa matriz2);
+
+/**
+ * @brief Troca duas linhas de lugar de uma matriz esparsa:: estrutura de matriz esparsa
+ * Troca duas linhas de lugar de uma matriz esparsa.
+ * @param matriz
+ * Ponteiro para a matriz esparsa a ser trocada as linhas.
+ * @param row1
+ * Linha 1 a ser trocada.
+ * @param row2
+ * Linha 2 a ser trocada.
+ * @return pMatrizEsparsa
+ * Ponteiro para a matriz esparsa com as linhas trocadas.
+*/
+pMatrizEsparsa MatrizEsparsa_troca_linhas(pMatrizEsparsa matriz, int row1, int row2);
+
+/**
+ * @brief Troca duas colunas de lugar de uma matriz esparsa:: estrutura de matriz esparsa
+ * Troca duas colunas de lugar de uma matriz esparsa.
+ * @param matriz
+ * Ponteiro para a matriz esparsa a ser trocada as colunas.
+ * @param column1
+ * Coluna 1 a ser trocada.
+ * @param column2
+ * Coluna 2 a ser trocada.
+ * @return pMatrizEsparsa
+ * Ponteiro para a matriz esparsa com as colunas trocadas.
+*/
+pMatrizEsparsa MatrizEsparsa_troca_colunas(pMatrizEsparsa matriz, int column1, int column2);
+
+/**
  * @brief Destroi uma matriz esparsa:: estrutura de matriz esparsa
  *  Libera a memoria alocada para uma matriz esparsa.
  * @param matriz

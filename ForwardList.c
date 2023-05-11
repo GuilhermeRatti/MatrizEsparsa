@@ -56,6 +56,7 @@ int ForwardList_insere(pForwardList lista, pNode node, Operacao op)
     // Caso estejamos sobrescrevendo uma posicao ja preenchida, entao eh mais facil mudar o valor e retornar
     // isso funciona porque se estivermos alterando uma celula ja existente, entao vamos alterar seu valor tanto
     // na lista de linhas quanto na lista de colunas, entao nao precisamos nos preocupar com a outra lista
+    // retornamos 1 para indicar que houve uma colisao e explicitar que nao sera necessario inserir o elemento na outra lista
     if (aux != NULL)
     {
         if ((lista->tipo == ROW && Node_get_column(aux) == Node_get_column(node)) ||
@@ -96,7 +97,7 @@ int ForwardList_insere(pForwardList lista, pNode node, Operacao op)
 
     lista->size++;
 
-    return 0;
+    return 0; // Se chegou ate aqui, nao ocorreu nenhuma colisao
 }
 
 // Funcao que le um valor da lista encadeada dada uma posicao

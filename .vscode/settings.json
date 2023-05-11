@@ -9,6 +9,7 @@
         "filemanager.h": "c",
         "ctype.h": "c",
         "forwardlist.h": "c",
-        "type_traits": "c"
+        "type_traits": "c",
+        "matrizesparsa.h": "c"
     }
 }

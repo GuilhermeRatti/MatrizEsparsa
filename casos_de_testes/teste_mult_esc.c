@@ -1,5 +1,4 @@
 #include "MatrizEsparsa.h"
-#include "ForwardList.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -11,10 +10,13 @@ int main(int argc, char const *argv[])
     MatrizEsparsa_insere(matriz, 0, 0, 1, REPLACE);
 
     printf("\nMATRIZ 1:\n");
-    printf("%f ", MatrizEsparsa_le_valor(matriz, 0, 0));
-    printf("%f\n", MatrizEsparsa_le_valor(matriz, 0, 1));
-    printf("%f ", MatrizEsparsa_le_valor(matriz, 1, 0));
-    printf("%f\n", MatrizEsparsa_le_valor(matriz, 1, 1));
+    int i,j;
+    for(i=0;i<2;i++){
+        for(j=0;j<2;j++){
+            printf("%f ", MatrizEsparsa_le_valor(matriz, i, j));
+        }
+        printf("\n");
+    }
     //MATRIZ 1
     // 1.000000 1.000000
     // 0.000000 0.000000
@@ -26,10 +28,13 @@ int main(int argc, char const *argv[])
     MatrizEsparsa_insere(matriz2, 1, 1, 2, REPLACE);
 
     printf("\nMATRIZ 2:\n");
-    printf("%f ", MatrizEsparsa_le_valor(matriz2, 0, 0));
-    printf("%f\n", MatrizEsparsa_le_valor(matriz2, 0, 1));
-    printf("%f ", MatrizEsparsa_le_valor(matriz2, 1, 0));
-    printf("%f\n", MatrizEsparsa_le_valor(matriz2, 1, 1));
+    for(i=0;i<2;i++){
+        for(j=0;j<2;j++){
+            printf("%f ", MatrizEsparsa_le_valor(matriz2, i, j));
+        }
+        printf("\n");
+    }
+
     //MATRIZ 2
     // 0.000000 2.000000
     // 2.000000 2.000000
@@ -38,20 +43,24 @@ int main(int argc, char const *argv[])
     pMatrizEsparsa mult2 = MatrizEsparsa_mult_por_escalar(matriz2, 0.5);
 
     printf("\nMULT MATRIZ 1 * 3:\n");
-    printf("%f ", MatrizEsparsa_le_valor(mult1, 0, 0));
-    printf("%f\n", MatrizEsparsa_le_valor(mult1, 0, 1));
-    printf("%f ", MatrizEsparsa_le_valor(mult1, 1, 0));
-    printf("%f\n", MatrizEsparsa_le_valor(mult1, 1, 1));
+    for(i=0;i<2;i++){
+        for(j=0;j<2;j++){
+            printf("%f ", MatrizEsparsa_le_valor(mult1, i, j));
+        }
+        printf("\n");
+    }
 
     //RESULTADO ESPERADO
     // 3.000000 3.000000
     // 0.000000 0.000000
 
     printf("\nMULT MATRIZ 2 * 0.5:\n");
-    printf("%f ", MatrizEsparsa_le_valor(mult2, 0, 0));
-    printf("%f\n", MatrizEsparsa_le_valor(mult2, 0, 1));
-    printf("%f ", MatrizEsparsa_le_valor(mult2, 1, 0));
-    printf("%f\n", MatrizEsparsa_le_valor(mult2, 1, 1));
+    for(i=0;i<2;i++){
+        for(j=0;j<2;j++){
+            printf("%f ", MatrizEsparsa_le_valor(mult2, i, j));
+        }
+        printf("\n");
+    }
 
     //RESULTADO ESPERADO
     // 0.000000 1.000000

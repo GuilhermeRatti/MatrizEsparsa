@@ -1,5 +1,4 @@
 #include "MatrizEsparsa.h"
-#include "ForwardList.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -16,15 +15,13 @@ int main(int argc, char const *argv[])
     printf("=====================\n\n");
 
     printf("\nMATRIZ 1:\n");
-    printf("%f ", MatrizEsparsa_le_valor(matriz, 0, 0));
-    printf("%f ", MatrizEsparsa_le_valor(matriz, 0, 1));
-    printf("%f\n", MatrizEsparsa_le_valor(matriz, 0, 2));
-    printf("%f ", MatrizEsparsa_le_valor(matriz, 1, 0));
-    printf("%f ", MatrizEsparsa_le_valor(matriz, 1, 1));
-    printf("%f\n", MatrizEsparsa_le_valor(matriz, 1, 2));
-    printf("%f ", MatrizEsparsa_le_valor(matriz, 2, 0));
-    printf("%f ", MatrizEsparsa_le_valor(matriz, 2, 1));
-    printf("%f\n", MatrizEsparsa_le_valor(matriz, 2, 2));
+    int i,j;
+    for(i=0;i<3;i++){
+        for(j=0;j<3;j++){
+            printf("%f ", MatrizEsparsa_le_valor(matriz, i, j));
+        }
+        printf("\n");
+    }
 
     // MATRIZ 1
     //  1.000000 0.000000 0.000000
@@ -44,15 +41,12 @@ int main(int argc, char const *argv[])
     MatrizEsparsa_insere(matriz2, 2, 2, 2, REPLACE);
 
     printf("\nMATRIZ 2:\n");
-    printf("%f ", MatrizEsparsa_le_valor(matriz2, 0, 0));
-    printf("%f ", MatrizEsparsa_le_valor(matriz2, 0, 1));
-    printf("%f\n", MatrizEsparsa_le_valor(matriz2, 0, 2));
-    printf("%f ", MatrizEsparsa_le_valor(matriz2, 1, 0));
-    printf("%f ", MatrizEsparsa_le_valor(matriz2, 1, 1));
-    printf("%f\n", MatrizEsparsa_le_valor(matriz2, 1, 2));
-    printf("%f ", MatrizEsparsa_le_valor(matriz2, 2, 0));
-    printf("%f ", MatrizEsparsa_le_valor(matriz2, 2, 1));
-    printf("%f\n", MatrizEsparsa_le_valor(matriz2, 2, 2));
+    for(i=0;i<3;i++){
+        for(j=0;j<3;j++){
+            printf("%f ", MatrizEsparsa_le_valor(matriz2, i, j));
+        }
+        printf("\n");
+    }
     // MATRIZ 2
     //  2.000000 2.000000 2.000000
     //  2.000000 2.000000 2.000000
@@ -61,15 +55,12 @@ int main(int argc, char const *argv[])
     pMatrizEsparsa mult1 = MatrizEsparsa_mult_por_matriz(matriz, matriz2);
 
     printf("\nMULT MATRIZ 1 * MATRIZ 2:\n");
-    printf("%f ", MatrizEsparsa_le_valor(mult1, 0, 0));
-    printf("%f ", MatrizEsparsa_le_valor(mult1, 0, 1));
-    printf("%f\n", MatrizEsparsa_le_valor(mult1, 0, 2));
-    printf("%f ", MatrizEsparsa_le_valor(mult1, 1, 0));
-    printf("%f ", MatrizEsparsa_le_valor(mult1, 1, 1));
-    printf("%f\n", MatrizEsparsa_le_valor(mult1, 1, 2));
-    printf("%f ", MatrizEsparsa_le_valor(mult1, 2, 0));
-    printf("%f ", MatrizEsparsa_le_valor(mult1, 2, 1));
-    printf("%f\n", MatrizEsparsa_le_valor(mult1, 2, 2));
+    for(i=0;i<3;i++){
+        for(j=0;j<3;j++){
+            printf("%f ", MatrizEsparsa_le_valor(mult1, i, j));
+        }
+        printf("\n");
+    }
 
     // RESULTADO ESPERADO
     //  2.000000 2.000000 2.000000
@@ -90,21 +81,12 @@ int main(int argc, char const *argv[])
     MatrizEsparsa_insere(matriz3, 4, 0, 83, REPLACE);
     MatrizEsparsa_insere(matriz3, 4, 2, 65, REPLACE);
 
-    printf("%f ", MatrizEsparsa_le_valor(matriz3,0,0));
-    printf("%f ", MatrizEsparsa_le_valor(matriz3,0,1));
-    printf("%f ", MatrizEsparsa_le_valor(matriz3,0,2));
-    printf("%f ", MatrizEsparsa_le_valor(matriz3,1,0));
-    printf("%f ", MatrizEsparsa_le_valor(matriz3,1,1));
-    printf("%f ", MatrizEsparsa_le_valor(matriz3,1,2));
-    printf("%f ", MatrizEsparsa_le_valor(matriz3,2,0));
-    printf("%f ", MatrizEsparsa_le_valor(matriz3,2,1));
-    printf("%f ", MatrizEsparsa_le_valor(matriz3,2,2));
-    printf("%f ", MatrizEsparsa_le_valor(matriz3,3,0));
-    printf("%f ", MatrizEsparsa_le_valor(matriz3,3,1));
-    printf("%f ", MatrizEsparsa_le_valor(matriz3,3,2));
-    printf("%f ", MatrizEsparsa_le_valor(matriz3,4,0));
-    printf("%f ", MatrizEsparsa_le_valor(matriz3,4,1));
-    printf("%f ", MatrizEsparsa_le_valor(matriz3,4,2));
+    for(i=0;i<5;i++){
+        for(j=0;j<3;j++){
+            printf("%f ", MatrizEsparsa_le_valor(matriz3, i, j));
+        }
+        printf("\n");
+    }
 
     // MATRIZ 3
     // 0.000000  0.000000  0.000000
@@ -113,6 +95,7 @@ int main(int argc, char const *argv[])
     // 0.000000  43.000000 0.000000
     // 83.000000 0.000000  65.000000
 
+    printf("\nMATRIZ 4:\n");
     pMatrizEsparsa matriz4 = MatrizEsparsa_cria(3, 5);
     MatrizEsparsa_insere(matriz4, 0, 1, 54, REPLACE);
     MatrizEsparsa_insere(matriz4, 0, 2, 9, REPLACE);
@@ -122,23 +105,34 @@ int main(int argc, char const *argv[])
     MatrizEsparsa_insere(matriz4, 2, 2, 41, REPLACE);
     MatrizEsparsa_insere(matriz4, 2, 4, 1, REPLACE);
 
-    printf("%f ", MatrizEsparsa_le_valor(matriz4,0,0));
-    printf("%f ", MatrizEsparsa_le_valor(matriz4,0,1));
-    printf("%f ", MatrizEsparsa_le_valor(matriz4,0,2));
-    printf("%f ", MatrizEsparsa_le_valor(matriz4,0,3));
-    printf("%f ", MatrizEsparsa_le_valor(matriz4,0,4));
-    printf("%f ", MatrizEsparsa_le_valor(matriz4,1,0));
-    printf("%f ", MatrizEsparsa_le_valor(matriz4,1,1));
-    printf("%f ", MatrizEsparsa_le_valor(matriz4,1,2));
-    printf("%f ", MatrizEsparsa_le_valor(matriz4,1,3));
-    printf("%f ", MatrizEsparsa_le_valor(matriz4,1,4));
-    printf("%f ", MatrizEsparsa_le_valor(matriz4,2,0));
-    printf("%f ", MatrizEsparsa_le_valor(matriz4,2,1));
-    printf("%f ", MatrizEsparsa_le_valor(matriz4,2,2));
-    printf("%f ", MatrizEsparsa_le_valor(matriz4,2,3));
-    printf("%f ", MatrizEsparsa_le_valor(matriz4,2,4));
+    for(i=0;i<3;i++){
+        for(j=0;j<5;j++){
+            printf("%f ", MatrizEsparsa_le_valor(matriz4, i, j));
+        }
+        printf("\n");
+    }
 
-    pMatrizEsparsa mult2 = MatrizEsparsa_mult_por_matriz(matriz3,matriz4);
+    // MATRIZ 4:
+    // 0.000000 54.000000 9.000000 0.000000 22.000000
+    // 0.000000 3.000000 0.000000 233.000000 0.000000
+    // 0.000000 0.000000 41.000000 0.000000 1.000000
+
+    printf("\nMULT MATRIZ 3 * MATRIZ 4:\n");
+    pMatrizEsparsa mult2 = MatrizEsparsa_mult_por_matriz(matriz3, matriz4);
+
+    for(i=0;i<5;i++){
+        for(j=0;j<5;j++){
+            printf("%f ", MatrizEsparsa_le_valor(mult2, i, j));
+        }
+        printf("\n");
+    }
+
+    // RESULTADO ESPERADO
+    // 0.000000 0.000000 0.000000 0.000000 0.000000
+    // 0.000000 21.000000 0.000000 1631.000000 0.000000
+    // 0.000000 2430.000000 1799.000000 0.000000 1024.000000
+    // 0.000000 129.000000 0.000000 10019.000000 0.000000
+    // 0.000000 4482.000000 3412.000000 0.000000 1891.000000
 
     MatrizEsparsa_destroi(matriz);
     MatrizEsparsa_destroi(matriz2);
