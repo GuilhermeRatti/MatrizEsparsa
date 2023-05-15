@@ -142,6 +142,53 @@ pMatrizEsparsa MatrizEsparsa_troca_linhas(pMatrizEsparsa matriz, int row1, int r
 pMatrizEsparsa MatrizEsparsa_troca_colunas(pMatrizEsparsa matriz, int column1, int column2);
 
 /**
+ * @brief Transpoe uma matriz esparsa:: estrutura de matriz esparsa
+ * Transpoe uma matriz esparsa.
+ * @param matriz
+ * Ponteiro para a matriz esparsa a ser transposta.
+ * @return pMatrizEsparsa
+*/
+pMatrizEsparsa MatrizEsparsa_transposicao(pMatrizEsparsa matriz);
+
+/**
+ * @brief Seleciona uma "fatia" de uma matriz esparsa:: estrutura de matriz esparsa
+ * Seleciona uma "fatia de matriz esparsa".
+ * @param matriz
+ * Ponteiro para a matriz esparsa a ser fatiada.
+ * @param row_inicio
+ * Linha inicial da matriz.
+ * @param column_inicio
+ * Coluna inicial da matriz.
+ * @param row_fim
+ * Linha final da matriz.
+ * @param column_fim
+ * Coluna final da matriz.
+ * @return pMatrizEsparsa
+ * Ponteiro para a matriz esparsa fatiada.
+*/
+pMatrizEsparsa MatrizEsparsa_slice(pMatrizEsparsa matriz, int row_inicio, int column_inicio, int row_fim, int column_fim);
+
+pMatrizEsparsa MatrizEsparsa_convolucao(pMatrizEsparsa matriz, pMatrizEsparsa kernel);
+
+/**
+ * @brief Imprime uma matriz esparsa no formato de matriz densa:: void
+ * Imprime uma matriz esparsa.
+ * @param matriz
+ * Ponteiro para a matriz esparsa a ser impressa.
+ * @return void
+ */
+void MatrizEsparsa_print_denso(pMatrizEsparsa matriz);
+
+/**
+ * @brief Imprime uma matriz esparsa no formato de matriz esparsa:: void
+ * Imprime uma matriz esparsa.
+ * @param matriz
+ * Ponteiro para a matriz esparsa a ser impressa.
+ * @return void
+ */
+void MatrizEsparsa_print_esparso(pMatrizEsparsa matriz);
+
+/**
  * @brief Destroi uma matriz esparsa:: estrutura de matriz esparsa
  *  Libera a memoria alocada para uma matriz esparsa.
  * @param matriz

@@ -12,3 +12,4 @@ Trabalho 1 de Estruturas de Dados
 # Somar matrizes - OK! - VALGRIND SAFE.
 > Percorre ambas as matrizes, inserindo todos os elementos nao nulos de cada uma na nova matriz resultante.
 > O caso de posicoes duplamente preenchidas eh tratado com uma soma, como especificado no item anterior.
+
