@@ -5,7 +5,7 @@
             "type": "cppdbg",
             "request": "launch",
             "cwd": ".",
-            "program": "${workspaceRoot}/main",
+            "program": "${workspaceRoot}/main.exe",
             "args": [],
         }
     ]

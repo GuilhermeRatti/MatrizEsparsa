@@ -15,7 +15,7 @@ typedef struct MatrizEsparsa *pMatrizEsparsa;
  * @note
  * O usuario eh responsavel por liberar os ponteiros utilizando a funcao matriz_esparsa_destroi().
  */
-pMatrizEsparsa MatrizEsparsa_cria(int rows, int columns);
+pMatrizEsparsa MatrizEsparsa_cria(int rows, int columns); //TESTADO!
 
 /**
  * @brief Insere um valor na matriz esparsa:: estrutura de matriz esparsa
@@ -34,7 +34,7 @@ pMatrizEsparsa MatrizEsparsa_cria(int rows, int columns);
  * @note
  * O valor eh inserido nas listas encadeadas da matriz esparsa na posicao (row, column).
  */
-void MatrizEsparsa_insere(pMatrizEsparsa matriz, int row, int column, float value, Operacao op);
+void MatrizEsparsa_insere(pMatrizEsparsa matriz, int row, int column, float value, Operacao op); //TESTADO!
 
 /**
  * @brief Le um valor da matriz esparsa:: estrutura de matriz esparsa
@@ -51,7 +51,7 @@ void MatrizEsparsa_insere(pMatrizEsparsa matriz, int row, int column, float valu
  * O valor eh lido das listas encadeadas da matriz esparsa na posicao (row, column).
  * Eh selecionada a lista encadeada de linhas ou de colunas dependendo da menor posicao entre row e column.
  */
-float MatrizEsparsa_le_valor(pMatrizEsparsa matriz, int row, int column);
+float MatrizEsparsa_le_valor(pMatrizEsparsa matriz, int row, int column); //TESTADO!
 
 /**
  * @brief Soma duas matrizes esparsas:: estrutura de matriz esparsa
@@ -66,7 +66,7 @@ float MatrizEsparsa_le_valor(pMatrizEsparsa matriz, int row, int column);
  * Eh criada uma nova matriz esparsa com o resultado da soma das duas matrizes esparsas.
  * Eh selecionada a lista encadeada de linhas ou de colunas dependendo da menor posicao entre row e column.
  */
-pMatrizEsparsa MatrizEsparsa_soma(pMatrizEsparsa matriz1, pMatrizEsparsa matriz2);
+pMatrizEsparsa MatrizEsparsa_soma(pMatrizEsparsa matriz1, pMatrizEsparsa matriz2); //TESTADO                 
 
 /**
  * @brief Multiplica uma matriz por um escalar:: estrutura de matriz esparsa
@@ -80,7 +80,7 @@ pMatrizEsparsa MatrizEsparsa_soma(pMatrizEsparsa matriz1, pMatrizEsparsa matriz2
  * @note
  * Eh criada uma nova matriz esparsa com o resultado da multiplicacao da matriz esparsa pelo escalar.
 */
-pMatrizEsparsa MatrizEsparsa_mult_por_escalar(pMatrizEsparsa matriz, float escalar);
+pMatrizEsparsa MatrizEsparsa_mult_por_escalar(pMatrizEsparsa matriz, float escalar); //TESTADO
 
 /**
  * @brief Multiplica duas matrizes esparsas:: estrutura de matriz esparsa
@@ -96,7 +96,7 @@ pMatrizEsparsa MatrizEsparsa_mult_por_escalar(pMatrizEsparsa matriz, float escal
  * Sera realizada uma multiplicacao a direita da matriz 1 pela matriz 2; matriz1 * matriz2, e nao matriz2 * matriz1.
  * Eh criada uma nova matriz esparsa com o resultado da multiplicacao das duas matrizes esparsas.
  */
-pMatrizEsparsa MatrizEsparsa_mult_por_matriz(pMatrizEsparsa matriz1, pMatrizEsparsa matriz2);
+pMatrizEsparsa MatrizEsparsa_mult_por_matriz(pMatrizEsparsa matriz1, pMatrizEsparsa matriz2); //TESTADO
 
 /**
  * @brief Multiplica duas matrizes esparsas ponto a ponto:: estrutura de matriz esparsa
@@ -111,7 +111,7 @@ pMatrizEsparsa MatrizEsparsa_mult_por_matriz(pMatrizEsparsa matriz1, pMatrizEspa
  * Eh obrigatorio que as dimensoes das duas matriz sejam iguais. 
  * Eh criada uma nova matriz esparsa com o resultado da multiplicacao das duas matrizes esparsas.
  */
-pMatrizEsparsa MatrizEsparsa_mult_ponto_a_ponto(pMatrizEsparsa matriz1, pMatrizEsparsa matriz2);
+pMatrizEsparsa MatrizEsparsa_mult_ponto_a_ponto(pMatrizEsparsa matriz1, pMatrizEsparsa matriz2); //TESTADO
 
 /**
  * @brief Troca duas linhas de lugar de uma matriz esparsa:: estrutura de matriz esparsa
@@ -125,7 +125,7 @@ pMatrizEsparsa MatrizEsparsa_mult_ponto_a_ponto(pMatrizEsparsa matriz1, pMatrizE
  * @return pMatrizEsparsa
  * Ponteiro para a matriz esparsa com as linhas trocadas.
 */
-pMatrizEsparsa MatrizEsparsa_troca_linhas(pMatrizEsparsa matriz, int row1, int row2);
+pMatrizEsparsa MatrizEsparsa_troca_linhas(pMatrizEsparsa matriz, int row1, int row2); //TESTADO
 
 /**
  * @brief Troca duas colunas de lugar de uma matriz esparsa:: estrutura de matriz esparsa
@@ -139,7 +139,7 @@ pMatrizEsparsa MatrizEsparsa_troca_linhas(pMatrizEsparsa matriz, int row1, int r
  * @return pMatrizEsparsa
  * Ponteiro para a matriz esparsa com as colunas trocadas.
 */
-pMatrizEsparsa MatrizEsparsa_troca_colunas(pMatrizEsparsa matriz, int column1, int column2);
+pMatrizEsparsa MatrizEsparsa_troca_colunas(pMatrizEsparsa matriz, int column1, int column2); //TESTADO
 
 /**
  * @brief Transpoe uma matriz esparsa:: estrutura de matriz esparsa
@@ -168,6 +168,17 @@ pMatrizEsparsa MatrizEsparsa_transposicao(pMatrizEsparsa matriz);
 */
 pMatrizEsparsa MatrizEsparsa_slice(pMatrizEsparsa matriz, int row_inicio, int column_inicio, int row_fim, int column_fim);
 
+/**
+ * @brief Realiza a convolucao de uma matriz esparsa:: estrutura de matriz esparsa
+ * @param matriz
+ * Ponteiro para a matriz esparsa a ser convolucionada.
+ * @param kernel
+ * Ponteiro para a matriz esparsa representando o kernel da convolucao.
+ * @return pMatrizEsparsa
+ * Ponteiro para a matriz esparsa convolocionada.
+ * @note
+ * O kernel devem ter necessariamente dimensoes impar
+*/
 pMatrizEsparsa MatrizEsparsa_convolucao(pMatrizEsparsa matriz, pMatrizEsparsa kernel);
 
 /**
