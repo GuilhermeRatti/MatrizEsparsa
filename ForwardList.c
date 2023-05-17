@@ -27,7 +27,7 @@ pForwardList ForwardList_cria(Direction tipo)
 // Funcao que insere um valor na lista encadeada
 // Entrada: ponteiro para a lista, valor a ser inserido e posicao a ser inserido
 // Saida: valor booleano (0 ou 1 - true ou false) dizendo se foi tratado uma situacao de colisao ou nao
-// Complexidade: O(n) (linear) + O(1) (constante) = O(n) (linear)
+// Complexidade: O(n) (linear)
 int ForwardList_insere(pForwardList lista, pNode node, Operacao op)
 {
     pNode aux = lista->head, past_node = NULL;

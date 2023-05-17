@@ -62,7 +62,7 @@ void MatrizEsparsa_insere(pMatrizEsparsa matriz, int row, int column, float valu
 // Funcao que le um valor da matriz esparsa
 // Entrada: ponteiro para a matriz, linha e coluna
 // Saida: valor lido
-// Complexidade: O(1) (constante)
+// Complexidade: O(n) (linear)
 float MatrizEsparsa_le_valor(pMatrizEsparsa matriz, int row, int column)
 {
     if (row >= matriz->rows ||
@@ -187,7 +187,7 @@ pMatrizEsparsa MatrizEsparsa_mult_por_matriz(pMatrizEsparsa matriz1, pMatrizEspa
 // Funcao que multiplica uma matriz esparsa por outra matriz esparsa ponto a ponto
 // Entrada: ponteiro para a matriz e escalar
 // Saida: ponteiro para a matriz resultante
-// Complexidade: O(n^2) (quadratica)
+// Complexidade: O(n) linear
 pMatrizEsparsa MatrizEsparsa_mult_ponto_a_ponto(pMatrizEsparsa matriz1, pMatrizEsparsa matriz2)
 {
     if (matriz1->columns != matriz2->columns ||
@@ -206,8 +206,8 @@ pMatrizEsparsa MatrizEsparsa_mult_ponto_a_ponto(pMatrizEsparsa matriz1, pMatrizE
         pNode iter_list2 = ForwardList_retorna_head(matriz2->head_rows[i]);
 
         // Se alguma das duas listas chegar no seu fim, nao ha necessidade de continuar, pois 0 * X = 0
-        while (iter_list1 != 0 &&
-               iter_list2 != 0)
+        while (iter_list1 != NULL &&
+               iter_list2 != NULL)
         {
             if (Node_get_column(iter_list1) == Node_get_column(iter_list2))
             {
@@ -234,6 +234,27 @@ pMatrizEsparsa MatrizEsparsa_mult_ponto_a_ponto(pMatrizEsparsa matriz1, pMatrizE
     }
 
     return saida;
+}
+
+// Funcao que soma elementos de uma matriz esparsa
+// Entrada: ponteiro para a matriz
+// Saida: soma dos elementos da matriz
+// Complexidade: O(n) (linear)
+float _MatrizEsparsa_soma_elementos(pMatrizEsparsa matriz)
+{
+    int i;
+    float soma = 0;
+    for (i = 0; i < matriz->rows; i++)
+    {
+        pNode node = ForwardList_retorna_head(matriz->head_rows[i]);
+        while (node != NULL)
+        {
+            soma += Node_get_value(node);
+            node = Node_get_next(node, ROW);
+        }
+    }
+
+    return soma;
 }
 
 // Funcao que troca duas linhas de uma matriz esparsa
@@ -264,7 +285,7 @@ pMatrizEsparsa MatrizEsparsa_troca_linhas(pMatrizEsparsa matriz, int row1, int r
         else
             linha = i;
 
-        while (iter_list != 0)
+        while (iter_list != NULL)
         {
             MatrizEsparsa_insere(saida,
                                  linha,
@@ -306,7 +327,7 @@ pMatrizEsparsa MatrizEsparsa_troca_colunas(pMatrizEsparsa matriz, int column1, i
         else
             coluna = i;
 
-        while (iter_list != 0)
+        while (iter_list != NULL)
         {
             MatrizEsparsa_insere(saida,
                                  Node_get_row(iter_list),
@@ -318,6 +339,152 @@ pMatrizEsparsa MatrizEsparsa_troca_colunas(pMatrizEsparsa matriz, int column1, i
     }
 
     return saida;
+}
+
+// Funcao que retorna a transposta de uma matriz esparsa
+// Entrada: ponteiro para a matriz
+// Saida: ponteiro para a matriz transposta
+// Complexidade: n^2 + n; O(n^2) (quadratica)
+// A funcao MatrizEsparsa_insere tem complexidade O(n) (linear), mas levando em consideracao que o n da funcao de MatrizEsparsa_insere cresce apos cada chamada
+// Seu fator N cresce de acordo com a sequencia: 1, 2, 3, 4... n-2, n-1, n; que pode ser rearranjado associando termos equidistantes: n+1, n+1, n+1...
+// Logo, como a complexidade isolada da funcao MatrizEsparsa_transposta seria linear (n), temos uma complexidade de n*(n+1), que tem big O de O(n^2)
+pMatrizEsparsa MatrizEsparsa_transposicao(pMatrizEsparsa matriz)
+{
+    pMatrizEsparsa saida = MatrizEsparsa_cria(matriz->columns, matriz->rows);
+
+    int i;
+    for (i = 0; i < matriz->columns; i++)
+    {
+        pNode iter_list = ForwardList_retorna_head(matriz->head_columns[i]);
+        while (iter_list != NULL)
+        {
+            MatrizEsparsa_insere(saida,
+                                 Node_get_column(iter_list), // O truque aqui esta no fato que os atributos de linha e coluna foram invertidos
+                                 Node_get_row(iter_list),    // Logo, o resultado sera uma transposicao
+                                 Node_get_value(iter_list),
+                                 REPLACE);
+            iter_list = Node_get_next(iter_list, COLUMN);
+        }
+    }
+
+    return saida;
+}
+
+// Funcao que retorna a fatia selecionada da matriz
+// Entrada: ponteiro para a matriz, linha e coluna inicial e final
+// Saida: ponteiro para a matriz resultante
+// Complexidade: O(n) linear
+pMatrizEsparsa MatrizEsparsa_slice(pMatrizEsparsa matriz, int row_inicio, int column_inicio, int row_fim, int column_fim)
+{
+    if (row_inicio > row_fim || column_inicio > column_fim)
+        exit(printf("MatrizEsparsa_slice: indices invalidos!\n"));
+
+    pMatrizEsparsa saida = MatrizEsparsa_cria(row_fim - row_inicio + 1, column_fim - column_inicio + 1);
+    int foi_preenchida_pelo_menos_1_vez = 0;
+
+    int i;
+    for (i = row_inicio; i < row_fim; i++)
+    {
+        pNode iter_list = ForwardList_retorna_head(matriz->head_rows[i]);
+        while (iter_list != NULL)
+        {
+            if (Node_get_column(iter_list) >= column_inicio && Node_get_column(iter_list) <= column_fim)
+            {
+                MatrizEsparsa_insere(saida,
+                                     Node_get_row(iter_list) - row_inicio,
+                                     Node_get_column(iter_list) - column_inicio,
+                                     Node_get_value(iter_list),
+                                     REPLACE);
+                foi_preenchida_pelo_menos_1_vez = 1;
+            }
+            else if (Node_get_column(iter_list) > column_fim)
+                break;
+        }
+    }
+
+    if (foi_preenchida_pelo_menos_1_vez == 0)
+    {
+        MatrizEsparsa_destroi(saida);
+        saida = NULL;
+    }
+
+    return saida;
+}
+
+// Funcao que retorna a matriz resultante da convolucao entre a matriz e o kernel
+// Entrada: ponteiro para a matriz e ponteiro para o kernel
+// Saida: ponteiro para a matriz resultante
+// Complexidade: O(n^2) (quadratica)
+pMatrizEsparsa MatrizEsparsa_convolucao(pMatrizEsparsa matriz, pMatrizEsparsa kernel)
+{
+    if (matriz->rows != matriz->columns || kernel->rows != kernel->columns)
+        exit(printf("MatrizEsparsa_convolucao: matriz e kernel devem ser quadrados!\n"));
+
+    if (kernel->rows % 2 == 0)
+        exit(printf("MatrizEsparsa_convolucao: kernel deve ter dimensao impar!\n"));
+
+    int i, j;
+    int kernel_size = kernel->rows;
+    int kernel_center = kernel_size / 2;
+
+    pMatrizEsparsa saida = MatrizEsparsa_cria(matriz->rows, matriz->columns);
+
+    for (i = 0; i < matriz->rows; i++)
+    {
+        for (j = 0; j < matriz->columns; j++)
+        {
+            pMatrizEsparsa slice = MatrizEsparsa_slice(matriz, i - kernel_center, j - kernel_center, i + kernel_center, j + kernel_center);
+
+            if (slice != NULL)
+            {
+                pMatrizEsparsa mult = MatrizEsparsa_mult_ponto_a_ponto(slice, kernel);
+                float soma = _MatrizEsparsa_soma_elementos(mult);
+                MatrizEsparsa_insere(saida, i, j, soma, REPLACE);
+
+                MatrizEsparsa_destroi(slice);
+                MatrizEsparsa_destroi(mult);
+            }
+        }
+    }
+
+    return saida;
+}
+
+// Funcao que retorna a matriz inversa de uma matriz esparsa
+// Entrada: ponteiro para a matriz
+// Saida: ponteiro para a matriz inversa
+// Complexidade: O(n^3) (cubica) (devido a ter que iterar por (linhas x colunas) e para cada iteracao, a chamada de MatrizEsparsa_le_valor, que tem O(n))
+void MatrizEsparsa_print_denso(pMatrizEsparsa matriz)
+{
+    int i, j;
+    for (i = 0; i < matriz->rows; i++)
+    {
+        for (j = 0; j < matriz->columns; j++)
+        {
+            printf("%f ", MatrizEsparsa_le_valor(matriz, i, j));
+        }
+        printf("\n");
+    }
+}
+
+// Funcao que imprime uma matriz esparsa
+// Entrada: ponteiro para a matriz
+// Saida: nenhum
+// Complexidade: O(n) linear
+void MatrizEsparsa_print_esparso(pMatrizEsparsa matriz)
+{
+    int i;
+    for (i = 0; i < matriz->rows; i++)
+    {
+        printf("Linha %d: ", i);
+        pNode iter_list = ForwardList_retorna_head(matriz->head_rows[i]);
+        while (iter_list != NULL)
+        {
+            printf("%f ", Node_get_value(iter_list));
+            iter_list = Node_get_next(iter_list, ROW);
+        }
+        printf("\n");
+    }
 }
 
 // Funcao que destroi uma matriz esparsa
