@@ -78,6 +78,15 @@ float MatrizEsparsa_le_valor(pMatrizEsparsa matriz, int row, int column)
     return target;
 }
 
+pNode _MatrizEsparsa_seleciona_linha(pMatrizEsparsa matriz, int linha)
+{
+    if (linha < 0)
+        return NULL;
+    else if (linha >= matriz->rows)
+        return NULL;
+    return ForwardList_retorna_head(matriz->head_rows[linha]);
+}
+
 // Funcao que le uma linha da matriz esparsa
 // Entrada: ponteiro para a matriz e linha
 // Saida: ponteiro para a lista encadeada com os valores da linha
@@ -381,32 +390,31 @@ pMatrizEsparsa MatrizEsparsa_slice(pMatrizEsparsa matriz, int row_inicio, int co
     if (row_inicio > row_fim || column_inicio > column_fim)
         exit(printf("MatrizEsparsa_slice: indices invalidos!\n"));
 
-    int tam_row,tam_col,row_offset=0,col_offset=0;
-    
-    tam_row = row_fim - row_inicio + 1;
-    tam_col = column_fim - column_inicio + 1;
+    int slice_row_size, slice_col_size, row_offset = 0, col_offset = 0;
 
-    if(column_inicio < 0)
-    {   
+    slice_row_size = row_fim - row_inicio + 1;
+    slice_col_size = column_fim - column_inicio + 1;
+
+    if (column_inicio < 0)
+    {
         col_offset = -column_inicio;
         column_inicio = 0;
     }
     else if (column_fim > matriz->columns)
         column_fim = matriz->columns;
-    
-    if(row_inicio < 0)
+
+    if (row_inicio < 0)
     {
         row_offset = -row_inicio;
         row_inicio = 0;
     }
-    if(row_fim > matriz->rows)
+    if (row_fim > matriz->rows)
         row_fim = matriz->rows;
 
-    pMatrizEsparsa saida = MatrizEsparsa_cria(tam_row, tam_col);
-    int foi_preenchida_pelo_menos_1_vez = 0;
+    pMatrizEsparsa saida = MatrizEsparsa_cria(slice_row_size, slice_col_size);
 
     int i;
-    for (i = row_inicio; i < row_fim; i++)
+    for (i = row_inicio; i <= row_fim; i++)
     {
         pNode iter_list = ForwardList_retorna_head(matriz->head_rows[i]);
         while (iter_list != NULL)
@@ -418,58 +426,105 @@ pMatrizEsparsa MatrizEsparsa_slice(pMatrizEsparsa matriz, int row_inicio, int co
                                      Node_get_column(iter_list) - column_inicio + col_offset,
                                      Node_get_value(iter_list),
                                      REPLACE);
-                foi_preenchida_pelo_menos_1_vez = 1;
             }
             else if (Node_get_column(iter_list) > column_fim)
                 break;
 
-            iter_list = Node_get_next(iter_list,ROW);
+            iter_list = Node_get_next(iter_list, ROW);
         }
-    }
-
-    if (foi_preenchida_pelo_menos_1_vez == 0)
-    {
-        MatrizEsparsa_destroi(saida);
-        saida = NULL;
     }
 
     return saida;
 }
 
-// Funcao que retorna a matriz resultante da convolucao entre a matriz e o kernel
-// Entrada: ponteiro para a matriz e ponteiro para o kernel
-// Saida: ponteiro para a matriz resultante
-// Complexidade: O(n^2) (quadratica)
+// Complexidade: E*K (elementos nao nulos da matriz * elementos nao nulos do kernel), com pior caso quando a matriz eh completamente preenchida e E = K, logo O(E^2)
 pMatrizEsparsa MatrizEsparsa_convolucao(pMatrizEsparsa matriz, pMatrizEsparsa kernel)
 {
     if (kernel->rows % 2 == 0 || kernel->columns % 2 == 0)
         exit(printf("MatrizEsparsa_convolucao: kernel deve ter dimensoes impar!\n"));
 
-    int i, j;
+    int i, k;
     int kernel_center_row = kernel->rows / 2;
     int kernel_center_col = kernel->columns / 2;
 
+    pNode selected_rows[kernel->rows];
+    int next_step_rows[kernel->rows];
+
     pMatrizEsparsa saida = MatrizEsparsa_cria(matriz->rows, matriz->columns);
 
+    // O algoritimo implementado foi feito para tratar a convolucao de forma esparsa e somente operar a multiplicacao ponto a ponto pelo kernel
+    // em situacoes que englobariam elementos nao nulos, seguindo uma selecao concorrente de celulas de N listas encadeadas de linhas,
+    // sendo N o numero de linhas de um kernel, tendo o centro de seu kernel exatamente sobre a posicao i, para qualquer i do for abaixo
     for (i = 0; i < matriz->rows; i++)
     {
-        for (j = 0; j < matriz->columns; j++)
+        // Para cada i, sao selecionadas as as linhas que a primeira iteracao do kernel englobaria (algumas linhas serao negativas, mas isso esta sendo tratado)
+        for (k = 0; k < kernel->rows; k++)
         {
-            pMatrizEsparsa slice = MatrizEsparsa_slice(matriz,
-                                                       i - kernel_center_row,   //linha de inicio
-                                                       j - kernel_center_col,   //coluna de inicio
-                                                       i + kernel_center_row,   //linha de fim
-                                                       j + kernel_center_col);  //coluna de fim
+            selected_rows[k] = _MatrizEsparsa_seleciona_linha(matriz, i - kernel_center_row + k);
+            next_step_rows[k] = 0;
+        }
 
-            if (slice != NULL)
+        // O centro do kernel por linha ficara "fixo" na coluna i, mas vai variar de 0 ao maximo de colunas, de acordo com as posicoes dos elementos
+        // naso nulos nas linhas selecionadas. Instanciamos ele inicialmente como 0 entao.
+        int column_center = 0;
+
+        while (1)
+        {
+            int continue_iterating = 0, nearest_column = matriz->columns;
+            // Entraremos num loop com condicao de parada como o momento em que nao existam mais elementos nao nulos em todas as linhas
+            for (k = 0; k < kernel->rows; k++)
             {
+                if (selected_rows[k] != NULL)
+                {
+                    if (Node_get_column(selected_rows[k]) <= nearest_column)
+                    {
+                        nearest_column = Node_get_column(selected_rows[k]);
+                        next_step_rows[k] = 1;
+                    }
+                    continue_iterating = 1;
+                }
+            }
+
+            if (!continue_iterating)
+                break;
+
+            while (column_center <= (nearest_column + kernel_center_col))
+            {
+                if (column_center < (nearest_column - kernel_center_col))
+                    column_center = nearest_column - kernel_center_col;
+
+                // Complexidade O(K), linear
+                pMatrizEsparsa slice = MatrizEsparsa_slice(matriz,
+                                                           i - kernel_center_row,              // linha de inicio
+                                                           column_center - kernel_center_col,  // coluna de inicio
+                                                           i + kernel_center_row,              // linha de fim
+                                                           column_center + kernel_center_col); // coluna de fim
+
                 pMatrizEsparsa mult = MatrizEsparsa_mult_ponto_a_ponto(slice, kernel);
                 float soma = _MatrizEsparsa_soma_elementos(mult);
-                if(soma!=0)
-                    MatrizEsparsa_insere(saida, i, j, soma, REPLACE);
+                if (soma != 0)
+                    MatrizEsparsa_insere(saida,
+                                         i,
+                                         column_center,
+                                         soma,
+                                         REPLACE);
 
-                MatrizEsparsa_destroi(slice);
                 MatrizEsparsa_destroi(mult);
+                MatrizEsparsa_destroi(slice);
+
+                if (column_center >= matriz->columns)
+                    break;
+                else
+                    column_center++;
+            }
+
+            for (k = 0; k < kernel->columns; k++)
+            {
+                if (next_step_rows[k])
+                {
+                    next_step_rows[k] = 0;
+                    selected_rows[k] = Node_get_next(selected_rows[k], ROW);
+                }
             }
         }
     }
@@ -488,7 +543,7 @@ void MatrizEsparsa_print_denso(pMatrizEsparsa matriz)
     {
         for (j = 0; j < matriz->columns; j++)
         {
-            printf("%f ", MatrizEsparsa_le_valor(matriz, i, j));
+            printf("%.0f ", MatrizEsparsa_le_valor(matriz, i, j));
         }
         printf("\n");
     }
