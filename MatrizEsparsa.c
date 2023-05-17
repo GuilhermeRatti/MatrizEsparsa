@@ -401,7 +401,7 @@ pMatrizEsparsa MatrizEsparsa_slice(pMatrizEsparsa matriz, int row_inicio, int co
         column_inicio = 0;
     }
     else if (column_fim > matriz->columns)
-        column_fim = matriz->columns;
+        column_fim = matriz->columns - 1;
 
     if (row_inicio < 0)
     {
@@ -409,7 +409,7 @@ pMatrizEsparsa MatrizEsparsa_slice(pMatrizEsparsa matriz, int row_inicio, int co
         row_inicio = 0;
     }
     if (row_fim > matriz->rows)
-        row_fim = matriz->rows;
+        row_fim = matriz->rows - 1;
 
     pMatrizEsparsa saida = MatrizEsparsa_cria(slice_row_size, slice_col_size);
 
