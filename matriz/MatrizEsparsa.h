@@ -1,13 +1,6 @@
 #pragma once
 #include "ForwardList.h"
 
-typedef enum OperacaoGauss
-{
-    ESCALONAR=1,
-    DETERMINANTE=2,
-    INVERSA=3
-} OperacaoGauss;
-
 typedef struct MatrizEsparsa *pMatrizEsparsa;
 
 /**

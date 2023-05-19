@@ -2,7 +2,7 @@ all: maker
 
 CODIGOS = matriz/*.c
 HEADERS = matriz/*.h
-override CFLAGS += -ggdb3 -Wall -lm
+override CFLAGS += -ggdb3 -Wall -lm -g
 libmatriz.a: $(CODIGOS) $(HEADERS)
 	gcc -c $(CODIGOS)
 	ar crs libmatriz.a *.o
