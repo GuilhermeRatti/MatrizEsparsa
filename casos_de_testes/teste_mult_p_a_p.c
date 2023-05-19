@@ -1,4 +1,4 @@
-#include "MatrizEsparsa.h"
+#include "../matriz/MatrizEsparsa.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -12,14 +12,8 @@ int main(int argc, char const *argv[])
     MatrizEsparsa_insere(matriz1, 2, 1, 8, REPLACE);
     MatrizEsparsa_insere(matriz1, 2, 2, 9, REPLACE);
 
-    int i,j;
-    printf("\nMATRIZ 1:\n");
-    for(i=0;i<3;i++){
-        for(j=0;j<3;j++){
-            printf("%f ", MatrizEsparsa_le_valor(matriz1, i, j));
-        }
-        printf("\n");
-    }
+    printf("\nMATRIZ 2:\n");
+    MatrizEsparsa_print_denso(matriz1);
 
     //MATRIZ 1
     // 1.000000 2.000000 0.000000
@@ -35,12 +29,7 @@ int main(int argc, char const *argv[])
     MatrizEsparsa_insere(matriz2, 2, 1, 2, REPLACE);
 
     printf("\nMATRIZ 2:\n");
-    for(i=0;i<3;i++){
-        for(j=0;j<3;j++){
-            printf("%f ", MatrizEsparsa_le_valor(matriz2, i, j));
-        }
-        printf("\n");
-    }
+    MatrizEsparsa_print_denso(matriz2);
     
     //MATRIZ 2
     // 0.000000 8.000000 7.000000
@@ -50,12 +39,7 @@ int main(int argc, char const *argv[])
     pMatrizEsparsa matriz3 = MatrizEsparsa_mult_ponto_a_ponto(matriz1, matriz2);
 
     printf("\nMATRIZ 3:\n");
-    for(i=0;i<3;i++){
-        for(j=0;j<3;j++){
-            printf("%f ", MatrizEsparsa_le_valor(matriz3, i, j));
-        }
-        printf("\n");
-    }
+    MatrizEsparsa_print_denso(matriz3);
 
     //MATRIZ 3
     // 0.000000 16.000000 0.000000

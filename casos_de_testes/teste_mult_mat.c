@@ -1,4 +1,4 @@
-#include "MatrizEsparsa.h"
+#include "../matriz/MatrizEsparsa.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -15,13 +15,7 @@ int main(int argc, char const *argv[])
     printf("=====================\n\n");
 
     printf("\nMATRIZ 1:\n");
-    int i,j;
-    for(i=0;i<3;i++){
-        for(j=0;j<3;j++){
-            printf("%f ", MatrizEsparsa_le_valor(matriz, i, j));
-        }
-        printf("\n");
-    }
+    MatrizEsparsa_print_denso(matriz);
 
     // MATRIZ 1
     //  1.000000 0.000000 0.000000
@@ -41,12 +35,7 @@ int main(int argc, char const *argv[])
     MatrizEsparsa_insere(matriz2, 2, 2, 2, REPLACE);
 
     printf("\nMATRIZ 2:\n");
-    for(i=0;i<3;i++){
-        for(j=0;j<3;j++){
-            printf("%f ", MatrizEsparsa_le_valor(matriz2, i, j));
-        }
-        printf("\n");
-    }
+    MatrizEsparsa_print_denso(matriz2);
     // MATRIZ 2
     //  2.000000 2.000000 2.000000
     //  2.000000 2.000000 2.000000
@@ -55,12 +44,7 @@ int main(int argc, char const *argv[])
     pMatrizEsparsa mult1 = MatrizEsparsa_mult_por_matriz(matriz, matriz2);
 
     printf("\nMULT MATRIZ 1 * MATRIZ 2:\n");
-    for(i=0;i<3;i++){
-        for(j=0;j<3;j++){
-            printf("%f ", MatrizEsparsa_le_valor(mult1, i, j));
-        }
-        printf("\n");
-    }
+    MatrizEsparsa_print_denso(mult1);
 
     // RESULTADO ESPERADO
     //  2.000000 2.000000 2.000000
@@ -81,12 +65,7 @@ int main(int argc, char const *argv[])
     MatrizEsparsa_insere(matriz3, 4, 0, 83, REPLACE);
     MatrizEsparsa_insere(matriz3, 4, 2, 65, REPLACE);
 
-    for(i=0;i<5;i++){
-        for(j=0;j<3;j++){
-            printf("%f ", MatrizEsparsa_le_valor(matriz3, i, j));
-        }
-        printf("\n");
-    }
+    MatrizEsparsa_print_denso(matriz3);
 
     // MATRIZ 3
     // 0.000000  0.000000  0.000000
@@ -105,12 +84,7 @@ int main(int argc, char const *argv[])
     MatrizEsparsa_insere(matriz4, 2, 2, 41, REPLACE);
     MatrizEsparsa_insere(matriz4, 2, 4, 1, REPLACE);
 
-    for(i=0;i<3;i++){
-        for(j=0;j<5;j++){
-            printf("%f ", MatrizEsparsa_le_valor(matriz4, i, j));
-        }
-        printf("\n");
-    }
+    MatrizEsparsa_print_denso(matriz4);
 
     // MATRIZ 4:
     // 0.000000 54.000000 9.000000 0.000000 22.000000
@@ -120,12 +94,7 @@ int main(int argc, char const *argv[])
     printf("\nMULT MATRIZ 3 * MATRIZ 4:\n");
     pMatrizEsparsa mult2 = MatrizEsparsa_mult_por_matriz(matriz3, matriz4);
 
-    for(i=0;i<5;i++){
-        for(j=0;j<5;j++){
-            printf("%f ", MatrizEsparsa_le_valor(mult2, i, j));
-        }
-        printf("\n");
-    }
+    MatrizEsparsa_print_denso(mult2);
 
     // RESULTADO ESPERADO
     // 0.000000 0.000000 0.000000 0.000000 0.000000

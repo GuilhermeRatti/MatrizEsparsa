@@ -1,6 +1,13 @@
 #pragma once
 #include "ForwardList.h"
 
+typedef enum OperacaoGauss
+{
+    ESCALONAR=1,
+    DETERMINANTE=2,
+    INVERSA=3
+} OperacaoGauss;
+
 typedef struct MatrizEsparsa *pMatrizEsparsa;
 
 /**
@@ -198,6 +205,25 @@ void MatrizEsparsa_print_denso(pMatrizEsparsa matriz);
  * @return void
  */
 void MatrizEsparsa_print_esparso(pMatrizEsparsa matriz);
+
+/**
+ * @brief Imprime uma matriz esparsa no formato de matriz esparsa:: void
+ * Imprime uma matriz esparsa.
+ * @param matriz
+ * Ponteiro para a matriz esparsa a ser impressa.
+ * @return void
+ */
+void MatrizEsparsa_escreve_binario(pMatrizEsparsa matriz, char* nome_arquivo);
+
+/**
+ * @brief le uma matriz esparsa no formato binario:: estrutura de matriz esparsa
+ * le uma matriz esparsa no formato binario.
+ * @param nome_arquivo
+ * Nome do arquivo a ser lido.
+ * @return pMatrizEsparsa
+ * Ponteiro para a matriz esparsa lida.
+*/
+pMatrizEsparsa MatrizEsparsa_le_binario(char* nome_arquivo);
 
 /**
  * @brief Destroi uma matriz esparsa:: estrutura de matriz esparsa

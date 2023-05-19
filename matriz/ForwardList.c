@@ -27,7 +27,7 @@ pForwardList ForwardList_cria(Direction tipo)
 // Funcao que insere um valor na lista encadeada
 // Entrada: ponteiro para a lista, valor a ser inserido e posicao a ser inserido
 // Saida: valor booleano (0 ou 1 - true ou false) dizendo se foi tratado uma situacao de colisao ou nao
-// Complexidade: O(n) (linear)
+// Complexidade: O(n) (linear) em relacao a quantidade de elementos naquela linha ou coluna
 int ForwardList_insere(pForwardList lista, pNode node, Operacao op)
 {
     pNode aux = lista->head, past_node = NULL;
@@ -103,7 +103,7 @@ int ForwardList_insere(pForwardList lista, pNode node, Operacao op)
 // Funcao que le um valor da lista encadeada dada uma posicao
 // Entrada: ponteiro para a lista e posicao a ser lida
 // Saida: valor lido
-// Complexidade: O(n) (linear)
+// Complexidade: O(n) (linear) em relacao a quantidade de elementos na lista encadeada
 float ForwardList_le_valor(pForwardList lista, int position)
 {
     pNode aux = lista->head;
@@ -162,7 +162,7 @@ Direction ForwardList_retorna_tipo(pForwardList lista)
 // Funcao que multiplica uma linha por uma coluna
 // Entrada: ponteiro para a linha e ponteiro para a coluna
 // Saida: resultado da multiplicacao
-// Complexidade: O(n) (linear)
+// Complexidade: O(n) (linear) sendo n a quantidade de elementos n nulos na linha ou na coluna (o que for menor)
 float ForwardList_multiplica_linha_por_coluna(pForwardList linha, pForwardList coluna)
 {
     pNode aux_linha = linha->head, aux_coluna = coluna->head;
