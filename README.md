@@ -9,9 +9,9 @@ Trabalho 1 de Estruturas de Dados
 # Make val.
 
 ## CADA CASO DE TESTE POSSUI UM MAKE DIFERNTE, A SEGUIR ESTA A LISTA DE REGRAS MAKER:
-> Make soma
-> Make mult_ponto
-> Make mult_escalar
+> Make soma <
+> Make mult_ponto <
+> Make mult_escalar < 
 > Make mult_matriz
 > Make convolucao
 > Make swap
