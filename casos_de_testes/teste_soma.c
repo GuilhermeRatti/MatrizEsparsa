@@ -29,6 +29,13 @@ int main(int argc, char const *argv[])
     // 0.000000 2.000000
     // 2.000000 2.000000
 
+    printf("\n PRINT ESPARSO DA MATRIZ 2:\n");
+    MatrizEsparsa_print_esparso(matriz2);
+    
+    //MATRIZ 2 ESPARSO
+    // Linha 0: 2.000000
+    // Linha 1: 2.000000 2.000000
+    
     pMatrizEsparsa soma = MatrizEsparsa_soma(matriz, matriz2);
 
     printf("\nSOMA MATRIZ 1 + MATRIZ 2:\n");
