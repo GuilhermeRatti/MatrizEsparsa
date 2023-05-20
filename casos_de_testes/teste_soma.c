@@ -33,13 +33,13 @@ int main(int argc, char const *argv[])
 
     printf("\nSOMA MATRIZ 1 + MATRIZ 2:\n");
     MatrizEsparsa_print_denso(soma);
-    
-    printf("\n PRINT ESPARSO DA SOMA:\n");
-    MatrizEsparsa_print_esparso(soma);
 
     //RESULTADO ESPERADO
     // 1.000000 3.000000
     // 2.000000 2.000000
+    
+    printf("\n PRINT ESPARSO DA SOMA:\n");
+    MatrizEsparsa_print_esparso(soma);
 
     MatrizEsparsa_destroi(matriz);
     MatrizEsparsa_destroi(matriz2);
