@@ -40,6 +40,10 @@ int main(int argc, char const *argv[])
     
     printf("\n PRINT ESPARSO DA SOMA:\n");
     MatrizEsparsa_print_esparso(soma);
+    
+    //RESULTADO ESPERADO
+    // Linha 0: 1.000000 3.000000
+    // Linha 1: 2.000000 2.000000
 
     MatrizEsparsa_destroi(matriz);
     MatrizEsparsa_destroi(matriz2);
