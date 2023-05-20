@@ -1,4 +1,4 @@
-all: maker
+all: soma
 
 CODIGOS = matriz/*.c
 HEADERS = matriz/*.h
@@ -7,9 +7,6 @@ libmatriz.a: $(CODIGOS) $(HEADERS)
 	gcc -c $(CODIGOS)
 	ar crs libmatriz.a *.o
 	rm -f *.o
-
-maker: libmatriz.a casos_de_testes/teste_todos.c
-	gcc -o main.exe casos_de_testes/teste_todos.c -I matriz -L . -lmatriz $(CFLAGS)
 
 soma: libmatriz.a casos_de_testes/teste_soma.c
 	gcc -o main.exe casos_de_testes/teste_soma.c -I matriz -L . -lmatriz $(CFLAGS)
@@ -40,7 +37,8 @@ transposta: libmatriz.a casos_de_testes/teste_transposta.c
 
 gauss: libmatriz.a casos_de_testes/teste_gauss.c
 	gcc -o main.exe casos_de_testes/teste_gauss.c -I matriz -L . -lmatriz $(CFLAGS)
-
+run:
+	./main.exe
 clean:
 	rm -f main.exe libmatriz.a
 val:
