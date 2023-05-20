@@ -34,9 +34,6 @@ slice: libmatriz.a casos_de_testes/teste_slice.c
 
 transposta: libmatriz.a casos_de_testes/teste_transposta.c
 	gcc -o main.exe casos_de_testes/teste_transposta.c -I matriz -L . -lmatriz $(CFLAGS)
-
-gauss: libmatriz.a casos_de_testes/teste_gauss.c
-	gcc -o main.exe casos_de_testes/teste_gauss.c -I matriz -L . -lmatriz $(CFLAGS)
 run:
 	./main.exe
 clean:
